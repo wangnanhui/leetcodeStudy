@@ -147,8 +147,36 @@ public class LeetCodeDp {
 
         }
         return maxSide * maxSide ;
-
     }
+
+
+    /**
+     * 最大平方数 和 零钱很像
+     *
+     * 思路
+     *   dp[i] 表示当前这个数 如dpp[12] = 12 ；
+     *   当前数最差由 n个1组成 所以第一次dp[i] = i
+     *   内层 i-j*j >= 0 表示当前j的平方能否组成<=i
+     *   Math.min(dp[i],dp[i - j*j ] + 1 )表示
+     *   比如10 可以由 3*3+1 或者说由dp[6]+2*2  也就是dp[1] + 3*3 后面+1表示当前j*j是1次
+     *   dp[6]中存储这组成6的最小平方数的个数
+     *
+     *
+     * @param n
+     * @return
+     */
+    public static int numSquares(int n){
+        int [] dp = new int[n];
+        dp[0] = 0 ;
+        for (int i = 1; i <= n; i++) {
+            dp[i] = i ;
+            for (int j = 1; i -j *j >=0 ; j++) {
+                dp[i] = Math.min(dp[i],dp[i - j*j ] + 1 );
+            }
+        }
+        return dp[n];
+    }
+
 
 }
 
