@@ -178,6 +178,86 @@ public class LeetCodeDp {
     }
 
 
+
+    public static int coinChange1(int[] coin, int n) {
+
+        if (coin == null || coin.length == 0 || n < 0) {
+            return -1;
+        }
+        if (n == 0) {
+            return 0;
+        }
+        int[] dp = new int[n + 1];// 记录
+        for (int i = 0; i < dp.length; i++) {
+            dp[i] = -1; // 初始化每个都不能找钱表示没钱可找
+        }
+        for (int i = 0; i < coin.length; i++) {
+            if (coin[i] == n) {//如果当前面额刚好够找 直接返回
+                return 1;
+            }
+            if (n - coin[i] > 0) { //如果需要找的钱大于当前面值的钱 那么当前面值的钱至为1，表示可以用当前硬币去找
+                dp[coin[i]] = 1;
+            }
+        }
+
+        for (int i = 1; i < dp.length; i++) {
+            for (int j = 0; j < coin.length; j++) {//遍历找每个钱的最优找钱方案
+                if (i - coin[j] >= 0 && dp[i - coin[j]] != -1) {//表示有钱可找
+                    // 找n 可以设计为0-n的一个数组，数组中每个值表示要找dp【i】的钱的最优解  找后面的钱根据前面要找钱的值去加
+                    if (dp[i] == -1 || dp[i] > (dp[i - coin[j]] + 1)) { //表示没有当前面值的钱或者当前面值的钱大于通过本面值钱找的硬币个数
+                        //	dp[i] = Math.min(dp[i],dp[i - coin[j]] + 1);
+
+                        dp[i] = dp[i - coin[j]] + 1;
+
+                    }
+
+                }
+
+            }
+
+        }
+        return dp[n];
+
+    }
+
+
+    public static int coinChange(int [] coins , int n ){
+        if(coins == null || coins.length == 0 || n <= 0 ){
+            return 0 ;
+        }
+        int [] dp = new int[n+1];
+        //初始化dp
+        for (int i = 0; i < dp.length; i++) {
+            dp[i] = -1 ;
+        }
+        for (int i = 0; i < coins.length; i++) {
+            if(n == coins[i]){ //如果刚好有面值==n直接返回
+                return -1 ;
+            }
+            if(n - coins[i] > 0 ){ //如果当前面值 < 小于要找的钱 把要找的钱的位置至为1
+                dp[coins[i]] = 1 ;
+            }
+
+        }
+        for (int i = 0; i <=n; i++) {
+            for (int j = 0; j < coins.length; j++) {
+                if( i - coins[j] >=0 && dp[i-coins[j]] != -1){//可找钱
+                    if(dp[i] == -1 ||  dp[i] > dp[i-coins[j]] + 1 ){
+                        dp[i] = dp[i-coins[j]] + 1 ;
+                    }
+
+                }
+
+
+            }
+        }
+        return dp[n];
+    }
+
+
+
+
+
 }
 
 
