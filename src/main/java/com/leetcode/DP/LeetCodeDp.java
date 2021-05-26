@@ -2,6 +2,10 @@ package com.leetcode.DP;
 
 public class LeetCodeDp {
     public static void main(String[] args) {
+
+        numDecodings("226");
+
+
         int[][] path = new int[3][3];
         path[0][0] = 1;
         path[0][1] = 3;
@@ -254,6 +258,78 @@ public class LeetCodeDp {
         return dp[n];
     }
 
+    /**
+     * 已知字母 A-Z 可以表示成数字 1-26。给定一个数字串，求有多少种不同的字符串等价于这个 数字串。
+     *   输入是一个由数字组成的字符串，输出是满足条件的解码方式总数。
+     *      Input: "226"
+     *      Output: 3
+     * 在这个样例中，有三种解码方式:BZ(2 26)、VF(22 6) 或 BBF(2 2 6)
+     *
+     * 思路 ：转移方程 f[i] = f[i-1] 表示当前可以独立组成要出来的数
+     *              f[i] = f[i-2]  表示需要前面一个组合加上当前的数字组成
+     *              f[i] +=f[i-2]  独立组成+需要前面组成的次数 就是总次数
+     *
+     *
+     *              比如 226  f[] = 【s.length+1】 f[0] = 1 ;
+     *              s[0]='2'
+     *              f[1]
+     *                  2   可以由 '2' 或者 ''+'2'组成（因为前面不能为空所以''+'2'不能组成 所以只有当前他自己 所以为f[1-1]）
+     *              f[2]
+     *                  22  可以'2' + f[1] 组成  或者 f[2-2] + '22'
+     *              f[3]
+     *                  226 可以由 2 2 6 (f[2])、 22 6(f[2]） 2 26 (f[0])  组成
+     *
+     *
+     *
+     *
+     *
+     * @param s
+     * @return
+     */
+    public static int numDecodings1(String  s ){
+        s = ' '  + s ;
+        char [] chs = s.toCharArray();
+        int [] dp = new int[chs.length];
+        dp[0] = 1 ;
+        for (int i = 1; i < dp.length; i++) {
+            int a = chs[i]- '0' ;
+            int b = chs[i] - '0' + (chs[i-1] - '0') * 10 ;
+            if(1 <= a && a <=9){//如果小于9 说明可以由当前值独立组成 f[i-1]
+                dp[i] = dp[i-1];
+            }
+            if(1 <=a && a <=9 && 10<=b && b<=26){ // 如果由前后两个组成 需要在当前值得基础上+ 组合成的数字 前面数字的组成方式  只需要往前考虑2位
+                dp[i]  += dp[i-2];
+            }
+        }
+
+
+
+        return dp[chs.length - 1] ;
+    }
+
+
+
+
+
+    public static int numDecodings(String s) {
+        int n = s.length();
+        s = " " + s;
+        char[] cs = s.toCharArray();
+        int[] f = new int[n + 1];
+        f[0] = 1;
+        for (int i = 1; i <= n; i++) {
+            // a : 代表「当前位置」单独形成 item
+            // b : 代表「当前位置」与「前一位置」共同形成 item
+            int a = cs[i] - '0', b = (cs[i - 1] - '0') * 10 + (cs[i] - '0');
+            // 如果 a 属于有效值，那么 f[i] 可以由 f[i - 1] 转移过来
+            if (1 <= a && a <= 9)
+                f[i] = f[i - 1];
+            // 如果 b 属于有效值，那么 f[i] 可以由 f[i - 2] 或者 f[i - 1] & f[i - 2] 转移过来
+            if (10 <= b && b <= 26)
+                f[i] += f[i - 2];
+        }
+        return f[n];
+    }
 
 
 
