@@ -6,6 +6,11 @@ import java.util.Set;
 
 public class LeetCodeDp {
     public static void main(String[] args) {
+       int [] nums = {10,9,2,5,3,7,101,18};
+       lengthOfLIS(nums);
+
+
+
 
         numDecodings("226");
 
@@ -353,6 +358,39 @@ public class LeetCodeDp {
         return  dp[s.length()];
 
 
+    }
+
+
+    /**
+     * 最长公共子序列
+     *
+     *
+     *
+     * @param arr
+     * @return
+     */
+    public static int lengthOfLIS(int [] arr ){
+
+        int n = arr.length;
+        int [] dp = new int[n]; //创建长度为n的数组
+        dp[0] = 1 ;  //第一个一定是自增的所以初始值赋值为1
+        int maxLength = 0 ;
+        for (int i = 1; i < n; i++) {
+            dp[i] = 1 ; //如果至于一个 那他自己一定是自增序列
+            for (int j = 0; j < i; j++) {
+                if(arr[i] > arr[j]){
+                    //先开始没看明白为啥和dp[j]+1想了一下
+                    //因为dp[j]存储的是上一步自增最长的 如 2 3 4 dp【2】 存储的是3 第四个比如是5  那就是dp【3】 + 1
+                    //如果是 2 4 3 那么dp【i】 会取 dp[2] + 1
+                    System.out.print("dp["+j+"]= " + dp[j] +"\t");
+                    dp[i] = Math.max(dp[i],dp[j]+1);
+                }
+            }
+            System.out.println();
+            maxLength = Math.max(maxLength,dp[i]);
+
+        }
+        return maxLength;
     }
 
 
