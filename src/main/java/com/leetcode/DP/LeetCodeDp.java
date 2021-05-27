@@ -394,6 +394,42 @@ public class LeetCodeDp {
     }
 
 
+    /**
+     * 两个字符串最长公共子序列
+     *
+     * 思路 ： 构建一个二维数组用来存储每一步的状态
+     *      如果两个相等 上一步的值+1
+     *      如果不相等 取[i][j-1] 和 [i-1][j]的最大值
+     *
+     *      [i][j-1] 其实是前一列最大长度
+     *      [i-1][j] 其实是上一行最长长度
+     * @param text1
+     * @param text2
+     * @return
+     */
+    public static  int longestCommonSubsequence(String text1 ,String text2){
+        int m = text1.length() ;
+        int n = text2.length() ;
+        int [][] dp = new int[m+1][n+1];//构建二维数组存放状态
+        for (int i = 1; i <= m; i++) {
+            char c = text1.charAt(i-1);
+            for (int j = 1; j <=n; j++) {
+                char c1 = text2.charAt(j-1);
+                if(c == c1){
+                    dp[i][j] = dp[i-1][j-1] + 1 ;
+                }else {
+                    dp[i][j] = Math.max(dp[i][j-1],dp[i-1][j]);
+                }
+
+            }
+        }
+        return  dp[m][n];
+
+    }
+
+
+
+
 
 
 }
