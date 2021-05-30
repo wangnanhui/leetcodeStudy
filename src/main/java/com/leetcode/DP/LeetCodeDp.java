@@ -6,6 +6,9 @@ import java.util.Set;
 
 public class LeetCodeDp {
     public static void main(String[] args) {
+
+       int [] kn =  {1,5,11,5};
+        canPartition(kn);
        int [] nums = {10,9,2,5,3,7,101,18};
        lengthOfLIS(nums);
 
@@ -466,6 +469,49 @@ public class LeetCodeDp {
         }
         return dp[N][W];
     }
+
+    /**
+     * leetcode 416 0-1背包问题
+     *
+     *  给你一个 只包含正整数 的 非空 数组 nums 。请你判断是否可以将这个数组分割成两个子集，使得两个子集的元素和相等。
+     *  输入：nums = [1,5,11,5]
+     *  输出：true
+     *  解释：数组可以分割成 [1, 5, 5] 和 [11] 。
+     *
+     *  思路：求中间和数 target 这个即为最大容量 N
+     *  nums 为背包
+     *  nums[i] 为每个价值
+     * @param nums
+     * @return
+     */
+    public static boolean canPartition(int[] nums) {
+        int sum = 0 ;
+        for(int i = 0 ; i < nums.length ; i++){
+            sum += nums[i];
+        }
+        if(sum % 2 !=0){
+            return false ;
+        }
+        int target = sum >> 1 ;
+        int n = nums.length;
+
+        boolean [][] dp = new boolean[n+1][target+1];
+        for(int i = 0 ; i<=n ; i++){
+            dp[i][0] = true ;//初始第一个都为true 表示只有一个的话 一定能组成
+        }
+        for(int i = 1 ; i <= n ;i++ ){
+            int w = nums[i-1];//当前价值
+            for(int j = 1 ; j <= target ; j++){ //计算当前价值有没有符合的
+                if(j >= w){//加上这个数大于当前的价值了   j表示当前可放的容量
+                    dp[i][j] = dp[i-1][j] | dp[i-1][j-w]; //相当于是如果取了这个数 是否满足和不取这个数是否满足
+                }else{
+                    dp[i][j] = dp[i-1][j];
+                }
+            }
+        }
+        return dp[n][target];
+    }
+
 
 }
 
