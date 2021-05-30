@@ -427,10 +427,45 @@ public class LeetCodeDp {
 
     }
 
+    /**
+     * 0-1背包问题
+     * @param weights  背包所有物品重量数组
+     * @param values   背包中每个物品对应的价值
+     * @param N  N个物品
+     * @param W  背包容量
+     * @return
+     */
+    public static int knapsack(int [] weights, int [] values, int N, int W ,boolean fullPack){
+        int [][] dp = new int[N+1][W+1];
+        for (int i = 1; i <= N; i++) {
+            int v = values[i-1];
+            int w = weights[i-1];
+            for (int j = 1; j <= W; j++) {
+                if(fullPack){//完全背包问题
+                    //如果当前物品重量 + 上次放入的重量超过背包大小
+                    if(j < w){//dp[i][j]为上次放入的
+                        dp[i][j] = dp[i-1][j];
+                    }else{//0-1背包是因为 只能选择一个 用完就没了  所以需要和上一次最优的相加
+                        //完全背包不存在这个问题，只需要找出当前最大的即可然后和上一次最大的作比较 哪个大要哪个
+                        dp[i][j] = Math.max(dp[i-1][j],dp[i][j-w]+v);
+                    }
+                }else{ //0-1背包问题
+                    //如果当前物品重量 + 上次放入的重量超过背包大小
+                    if(j < w){//dp[i][j]为上次放入的
+                        dp[i][j] = dp[i-1][j];
+                    }else{
+                        //否则的话取上次最大重量 和本次放入对比
+                        //dp[i-1][j-w]表示 如果把当前的加入那么j代表当前背包容量 加入后需要减去当前的w容量 为j-w
+                        //比如当前i= 3 j =5 w=2 那么当前的为 dp[2][5-2]+ w 只需要取dp[2][3]的价值即可  因为每次都会存当前最大放入后的价值
+                        dp[i][j] = Math.max(dp[i-1][j],dp[i-1][j-w]+v);
+                    }
+                }
 
+            }
 
-
-
+        }
+        return dp[N][W];
+    }
 
 }
 
