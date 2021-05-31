@@ -535,32 +535,29 @@ public class LeetCodeDp {
     }
 
 
-    /**
-     * leetcode 650
-     * 显然，当n为质数时，只能复制单个并粘贴n次；
-     * 当n为合数时，先找到n的最大因子i，然后复制1次，粘贴 n / i - 1次，
-     * 若用dp[i]表示给定数字i的答案，则dp[n] = dp[i] + 1 + n / i - 1，即dp[n] = dp[i] + n / i。
-     * 很多题解给出转移方程dp[n] = dp[i] + dp[n / i]，但是解释却是错的。
-     * 其实，当i为n的最大因子时,n / i则必然为质数，否则显然可以反证n有比i更大的因子，所以n / i可改为dp[n / i]。
-     * 另外，由于要找最大的因子，所以有小小的优化，即从后往前遍历寻找因子，并且起点可以压缩到n / 2，终点可以压缩至sqrt(n)。
-     *
-     * @param n
-     * @return
-     */
-    public static int minStepsDp(int n ){
-        int [] dp = new int[n+1] ;
-        dp[0] = 0 ;
-        dp[1] = 0 ;
-        for (int i = 2; i <= n ; i++) {
-            dp[i] = i  ;//如果是质数 复制n次就可以了
-            for (int j = 2; j * j  <= i ; j++) {
-                if(i % j == 0 ){
-                    dp[i] = dp[j] + dp[i/j];
+    //leetcode 650
+    //如果 n是一个质数 粘贴n次就行
+    //如果n是一个合数 那么找他最大因子  比如 n = 6  最大因子是3
+    //dp[3] = AAA 所以复制1次  即dp[3]+1 此时dp[3] = AAA了 所以需要粘贴1次即可 为dp[6/3]-1
+    //dp[6] = dp[3]+1 + dp[2]-1 ;
+    //转移方程为  dp[n] = dp[i]+1 + dp[n/i] -1
+    //          dp[n] = dp[i] + dp[n/i]
 
-                }
+    //
+    public static int minStepsDp(int n) {
+        int [] dp = new int[n+1];
+        dp[0] = 0 ;
+        dp[1] = 0 ; //只有一个不需要复制粘贴了
+        for(int i = 2 ; i <=n ; i++){
+            dp[i] = i ; //如果是质数 粘贴n次就行了
+            for(int j = 2 ; j*j <= i ; j++ ){//为什么用j*j 或者用 i开平方 因为 当i为合数时 会有p*q = i 和  q*p = i 两种情况 这种无情况 复制粘贴其实是一样的 所以用j*j  或者 i开平方
+                if(i % j == 0 )//此时说明
+                    dp[i] = dp[j] + dp[i/j] ;
+
             }
         }
-        return  dp[n];
+        return dp[n];
+
     }
 
 
