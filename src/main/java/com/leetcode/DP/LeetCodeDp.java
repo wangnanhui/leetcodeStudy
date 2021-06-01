@@ -601,7 +601,32 @@ public class LeetCodeDp {
         return max;
     }
 
-
+    /**
+     * leetcode 152
+     * 给你一个整数数组 nums ，请你找出数组中乘积最大的连续子数组（该子数组中至少包含一个数字），并返回该子数组所对应的乘积。
+     * 输入: [2,3,-2,4]
+     * 输出: 6
+     * 解释: 子数组 [2,3] 有最大乘积 6。
+     * @param nums
+     * @return
+     */
+    public int maxProduct(int[] nums) {
+        int     maxi = nums[0] ,  //记录当前最大的 ， 之所以需要最大和最小 是有可能出现负数
+                mini = nums[0] ,  //记录当前最小的
+                max = nums[0];
+        int length = nums.length ;
+        for(int i = 1 ; i < length ; ++i){
+            int     mx = maxi ,//记录一边计算后最大的
+                    mn = mini ;//记录一遍运算后最小的
+            maxi = Math.max(mx * nums[i],Math.max(nums[i], mn * nums[i]));//mx有可能*nums[i] < 0 , mn * num[i] 有可能大于0 ， nums[i]也有可能大于 两次的计算
+            mini = Math.min(mn * nums[i],Math.min(nums[i],mx * nums[i]));//同上面相反
+            //之所以需要mini 是因为最后有可能负负得正 踏马哒 没考虑到这里
+            //所以上面两步每次都在计算最大和最小
+            //最后对比当前计算的和当前的最大值哪个最大
+            max = Math.max(maxi,max);
+        }
+        return max ;
+    }
 }
 
 
