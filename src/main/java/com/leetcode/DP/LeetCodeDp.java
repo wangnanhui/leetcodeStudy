@@ -7,6 +7,15 @@ import java.util.Set;
 public class LeetCodeDp {
     public static void main(String[] args) {
 
+
+        int length = lcs("1234567","2345");
+
+        System.out.println(length);
+
+
+
+
+
        int [] kn =  {1,5,11,5};
         canPartition(kn);
        int [] nums = {10,9,2,5,3,7,101,18};
@@ -365,7 +374,7 @@ public class LeetCodeDp {
 
 
     /**
-     * 最长公共子序列
+     *
      *
      *
      *
@@ -561,6 +570,36 @@ public class LeetCodeDp {
     }
 
 
+    /**
+     * 最大公共子串 ，和最大递增子序列很像
+     * @param s1
+     * @param s2
+     * @return
+     */
+    public static  int lcs(String s1 , String s2){
+        int n = s1.length() ;
+        int m = s2.length() ;
+        int [][] dp = new int[n+1][m+1];
+        for (int i = 0; i <= n; i++) {
+            dp[i][0] = 0 ;
+
+        }
+        for (int i = 0; i <= m; i++) {
+            dp[0][i] = 0 ;
+        }
+        int max = 0 ;
+        for (int i = 1; i <= n ; i++) {
+            char c = s1.charAt(i-1);
+            for (int j = 1; j <= m; j++) {
+                if(c == s2.charAt(j-1)){
+                    dp[i][j] = dp[i-1][j-1]+1 ;
+                    max = Math.max(max,dp[i][j]);
+                }
+            }
+
+        }
+        return max;
+    }
 
 
 }
