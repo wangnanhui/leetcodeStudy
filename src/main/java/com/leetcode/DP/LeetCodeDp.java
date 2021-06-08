@@ -853,6 +853,7 @@ public class LeetCodeDp {
      * @return
      */
     public static int maxProfit(int k , int [] nums){
+
         int  n = nums.length ;
         int K = Math.min(k,n/2);//股票一买一卖交易为1次 所以应该取 股票最小能交易多少次
         int [][][] dp = new int [n][2][k+1];//n表示第几天 2表示两种状态 0代表不持有股票，1代表持有股票  k为交易次数
@@ -868,6 +869,77 @@ public class LeetCodeDp {
         }
         return dp[n-1][0][K];
     }
+
+
+
+
+
+
+    /**
+     * 股票买卖 leetcode 122
+     *
+     * @param prices
+     * @return
+     */
+    public static int maxProfit3(int[] prices) {
+        int n = prices.length;
+        int [][] dp = new int[n][3];
+        for(int i = 0 ; i < n ; i ++){
+            dp[i][0] = 0;
+            dp[i][1] = -prices[i];
+            dp[i][2] = 0;
+        }
+        for(int i = 1 ; i < n ; i++){
+            dp[i][0] = Math.max(dp[i-1][0],dp[i-1][2] - prices[i]);
+            dp[i][1] =dp[i-1][0] + prices[i];
+            dp[i][2] =Math.max(dp[i-1][1],dp[i-1][2]);
+        }
+        return dp[n-1][0];
+    }
+
+
+
+    /**
+     * 股票买卖 leetcode 122
+     *
+     * @param prices
+     * @return
+     */
+    public static int maxProfit1(int[] prices) {
+        int n = prices.length;
+        int [][] dp = new int[n][2];
+        for(int i = 0 ; i < n ; i ++){
+            dp[i][0] = 0;
+            dp[i][1] = -prices[i];
+        }
+        for(int i = 1 ; i < n ; i++){
+            dp[i][0] = Math.max(dp[i-1][0],dp[i-1][1] + prices[i]);
+            dp[i][1] = Math.max(dp[i-1][1],dp[i-1][0] - prices[i]);
+        }
+        return dp[n-1][0];
+    }
+
+
+    /** leetcode 714
+     * 如果卖了之后有手续费
+     * @param prices
+     * @param fee
+     * @return
+     */
+    public int maxProfit(int[] prices, int fee) {
+        int n = prices.length;
+        int [][] dp = new int[n][2];
+        for(int i = 0 ; i < n ; i ++){
+            dp[i][0] = 0;
+            dp[i][1] = -prices[i];
+        }
+        for(int i = 1 ; i < n ; i++){
+            dp[i][0] = Math.max(dp[i-1][0],dp[i-1][1] + prices[i] - fee );
+            dp[i][1] = Math.max(dp[i-1][1],dp[i-1][0] - prices[i]);
+        }
+        return dp[n-1][0];
+    }
+
 
 
 
