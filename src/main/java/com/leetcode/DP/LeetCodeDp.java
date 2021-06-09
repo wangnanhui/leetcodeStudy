@@ -940,6 +940,68 @@ public class LeetCodeDp {
         return dp[n-1][0];
     }
 
+    /**
+     * leetcode 343
+     * 给定一个正整数 n，将其拆分为至少两个正整数的和，并使这些整数的乘积最大化。 返回你可以获得的最大乘积。
+     *
+     * 示例 1:
+     *
+     * 输入: 2
+     * 输出: 1
+     * 解释: 2 = 1 + 1, 1 × 1 = 1。
+     *
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/integer-break
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     * @param n
+     * @return
+     */
+    public int integerBreak(int n) {
+        int [] dp = new int[n+1];
+        for (int i = 2; i <=n; i++) {
+            int max = dp[i];
+            for (int j = 1; j < i; j++) {
+                max = Math.max(max,Math.max( j * (i-j) , j * dp[i-j])); //后面是找出最大乘积 ，比如 i= 8 j=2  max(2 * 6 , 2 * dp[6]  ) dp[6] 最大乘积是2*2*2 ，所以会选择后面的
+            }
+            dp[i] = max;
+        }
+        return dp[n];
+    }
+
+
+    /**
+     * 编辑距离 leetcode 583
+     * @param word1
+     * @param word2
+     * @return
+     */
+    public int minDistance(String word1, String word2) {
+        int w1 = word1.length();
+        int w2 = word2.length();
+        int [][] dp = new int[w1+1][w2+1];
+        for(int i = 0 ; i<=w1 ;i ++){
+            dp[i][0]  = i ;
+        }
+        for(int i = 0 ; i<=w2 ;i ++){
+            dp[0][i]  = i ;
+        }
+        for(int i = 1 ; i <=w1 ;i++){
+            char c1 = word1.charAt(i-1);
+            for(int j=1 ; j<=w2 ;j++){
+                char c2 = word2.charAt(j-1);
+                if(c1 == c2){
+                    dp[i][j] = dp[i-1][j-1];
+                }else{
+                    dp[i][j] = Math.min(dp[i-1][j],dp[i][j-1])+1;
+                }
+            }
+        }
+        return dp[w1][w2];
+
+    }
+
+
+
 
 
 
