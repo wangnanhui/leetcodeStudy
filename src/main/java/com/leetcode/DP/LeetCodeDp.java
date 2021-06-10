@@ -1030,6 +1030,7 @@ public class LeetCodeDp {
             for (int j = neg; j >= num; j--) {//如果num >j 不选用当前的选择  neg为需要减去的，如果超过neg了越减越少了 不能用
                 //如果小于j 说明可以减
                 //0-1背包问题 相当于是如果选用了 那么当前价值是 上次+本次加入的价值  本次加入的价值为j-num 而j-num需要的次数前面算过了 为dp[j-num]
+                //所以 dp[neg] = dp[neg-num] +dp[neg]  == dp[i-1][neg]+ dp[i-1][neg-num]
                 dp[j] += dp[j - num];
             }
         }
