@@ -1000,7 +1000,41 @@ public class LeetCodeDp {
 
     }
 
+    /**
+     * 0 1 背包问题
+     * leetcode 494
+     *
+     * 假设当前总和为 sum 需要减去的为minus  那么需要加的为 sum -minus
+     * target = (sum -minus - minus )
+     *  所以需要减去的为 minus = (sum -target)/2
+     *
+     *
+     * @param nums
+     * @param target
+     * @return
+     */
+    public int findTargetSumWays(int[] nums, int target) {
 
+        int sum = 0;
+        for (int num : nums) {
+            sum += num;
+        }
+        int diff = sum - target;
+        if (diff < 0 || diff % 2 != 0) {
+            return 0;
+        }
+        int neg = diff / 2;
+        int[] dp = new int[neg + 1];
+        dp[0] = 1;
+        for (int num : nums) {
+            for (int j = neg; j >= num; j--) {//如果num >j 不选用当前的选择  neg为需要减去的，如果超过neg了越减越少了 不能用
+                //如果小于j 说明可以减
+                //0-1背包问题 相当于是如果选用了 那么当前价值是 上次+本次加入的价值  本次加入的价值为j-num 而j-num需要的次数前面算过了 为dp[j-num]
+                dp[j] += dp[j - num];
+            }
+        }
+        return dp[neg];
+    }
 
 
 
