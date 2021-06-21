@@ -178,3 +178,11 @@ Paste (粘贴) : 你可以粘贴你上一次复制的字符。给定一个数字
     leetcode 11
     
     leetcode 4 
+
+##### 20210621
+
+    leetcode 47
+    leetcode 17
+    使用dfs思想
+
+
