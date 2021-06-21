@@ -1,7 +1,6 @@
 package com.leetcode.dfs;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class DFSTest {
     public static void main(String[] args) {
@@ -53,8 +52,40 @@ public class DFSTest {
             num[a] = num[b];
             num[b] = temp;
         }
+    }
+
+    public List<String> letterCombinations(String digits) {
+        Map<Character,List<Character>> chars = new HashMap<>();
+        chars.put('2', Arrays.asList('a','b','c'));
+        chars.put('3', Arrays.asList('d','e','f'));
+        chars.put('4', Arrays.asList('g','h','i'));
+        chars.put('5', Arrays.asList('j','k','l'));
+        chars.put('6', Arrays.asList('m','n','o'));
+        chars.put('7', Arrays.asList('p','q','r','s'));
+        chars.put('8', Arrays.asList('t','u','v'));
+        chars.put('9', Arrays.asList('w','x','y','z'));
+
+        List<String> list = new ArrayList<>();
+        dfs1(digits,0,chars,new StringBuilder(),list);
+        return list;
+    }
+
+    void dfs1(String dig , int start ,  Map<Character,List<Character>>  map ,StringBuilder stringBuilder ,List<String> combain){
+        if(start == dig.length() ){
+            combain.add(stringBuilder.toString()) ;
+        }else{
+            Character c = dig.charAt(start);
+            List<Character> cs = map.get(c);
+            for (int i = 0; i < cs.size(); i++) {
+                stringBuilder.append((cs.get(i)));
+                dfs1(dig,start+1,map,stringBuilder,combain);
+                stringBuilder.deleteCharAt(start);
+            }
+        }
 
 
     }
+
+
 
 }
