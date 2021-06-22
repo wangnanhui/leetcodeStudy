@@ -4,6 +4,7 @@ import java.util.*;
 
 public class DFSTest {
     public static void main(String[] args) {
+
         permute(new int[]{1,2,3});
     }
 
@@ -16,6 +17,7 @@ public class DFSTest {
     public static List<List<Integer>> permute(int[] nums) {
 
         List<List<Integer>> p =new ArrayList<>();
+
         dfs(p,nums,0);
         System.out.println("nums = " +p);
         return p ;
@@ -82,7 +84,34 @@ public class DFSTest {
                 stringBuilder.deleteCharAt(start);
             }
         }
+    }
 
+
+
+    public String[] permutation(String s) {
+        Set<String> list = new HashSet<>();
+        if(s != null && s.length() >0 )
+            dfs(list,s.toCharArray(),0);
+        return list.toArray(new String[0]);
+    }
+
+
+    void dfs(Set<String> list , char [] chs , int start ){
+        if(start == chs.length){
+            list.add(new String(chs));
+            return ;
+        }
+        for(int i = start ; i<chs.length;i++){
+            swap(start,i,chs);
+            dfs(list,chs,start+1);
+            swap(i,start,chs);
+        }
+    }
+
+    void swap(int i , int j , char [] chs ){
+        char temp = chs[i];
+        chs[i] = chs[j];
+        chs[j] = temp ;
 
     }
 
