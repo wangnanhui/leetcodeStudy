@@ -7,6 +7,18 @@ import java.util.Set;
 public class LeetCodeDp {
     public static void main(String[] args) {
 
+        int [] arr = {1,1,1,1,1};
+        System.out.println( findTargetSumWays(arr,1));
+
+
+
+
+
+
+
+
+
+
 
         int length = lcs("1234567","2345");
 
@@ -1004,7 +1016,7 @@ public class LeetCodeDp {
      * 0 1 背包问题
      * leetcode 494
      *
-     * 假设当前总和为 sum 需要减去的为minus  那么需要加的为 sum -minus
+     * 假设当前总和为 sum 需要减去的为minus  那么需要加的为 sum - minus
      * target = (sum -minus - minus )
      *  所以需要减去的为 minus = (sum -target)/2
      *
@@ -1013,7 +1025,7 @@ public class LeetCodeDp {
      * @param target
      * @return
      */
-    public int findTargetSumWays(int[] nums, int target) {
+    public static int findTargetSumWays(int[] nums, int target) {
 
         int sum = 0;
         for (int num : nums) {
