@@ -131,7 +131,11 @@ public class DFSTest {
     /**
      * 看了一下答案
      *  比如 5 3
-     *      第一次  1 2 3  跳出remove掉3 此时在第二次递归中 start为3 进入第二个递归 start 4 满足后加入list中 然后return   相当于两次return 返回加入2时的方法栈
+     *      第一次  1 2 3  跳出remove掉3 此时在第二次递归中 start为3 进入第二个递归 start 4 因为时先判断再加入 所以每次都会执行后面的两个递归
+     *      加入4后 1 2 4  此时start为4 加入list1后 满足list.size = 3 return 第一个递归跳出 remove掉4 进入第二个递归 start+1 = 5
+     *      加入5后 1 2 5  此时start为4 加入list1后 满足list.size = 3 return 第一个递归跳出 remove掉5 进入第二个递归 start+1 = 6
+     *
+     *      第一轮过去后 进入第二个进去栈的方法 此时start = 2 ，从2开始继续循环上面的不步骤
      * @param hset
      * @param list
      * @param start
