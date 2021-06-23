@@ -4,8 +4,8 @@ import java.util.*;
 
 public class DFSTest {
     public static void main(String[] args) {
-
-        permute(new int[]{1,2,3});
+        combine(5,3);
+       // permute(new int[]{1,2,3});
     }
 
 
@@ -115,6 +115,49 @@ public class DFSTest {
 
     }
 
+    public static List<List<Integer>> combine(int n , int k ){
+        List<List<Integer>> list = new ArrayList<>();
+        Set<Set<Integer>>  hSet = new HashSet<>();
+        backtracking(hSet, list,1,n,k,new ArrayList<>());
+
+        System.out.println(list);
+        return list;
+        
+        
+    }
+
+    //本来是写了一个for 但超时了
+
+    /**
+     * 看了一下答案
+     *  比如 5 3
+     *      第一次  1 2 3  跳出remove掉3 此时在第二次递归中 start为3 进入第二个递归 start 4 满足后加入list中 然后return   相当于两次return 返回加入2时的方法栈
+     * @param hset
+     * @param list
+     * @param start
+     * @param n
+     * @param count
+     * @param list1
+     */
+    static void  backtracking(  Set<Set<Integer>>  hset , List<List<Integer>> list , int start ,int n , int count ,List<Integer> list1 ){
+        if (list1.size() + (n - start + 1) < count) {
+            return;
+        }
+        if(count == list1.size()){
+//            Set<Integer> list2 = new HashSet<>(list1);
+//            if(!hset.contains(list2) &&list2.size() == count){
+//                hset.add(list2);
+                list.add(new ArrayList<>(list1));
+       //     }
+            return ;
+        }
+
+        list1.add(start);
+        backtracking(hset,list,start+1,n,count,list1);
+        list1.remove(list1.size() -1 );
+        backtracking(hset,list,start+1,n,count,list1);
+        
+    }
 
 
 }
