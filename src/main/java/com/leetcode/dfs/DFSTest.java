@@ -4,7 +4,16 @@ import java.util.*;
 
 public class DFSTest {
     public static void main(String[] args) {
-        combine(5,3);
+        DFSTest dfs = new DFSTest();
+
+        char [][] board =    {{'A','B','C','E'},{'S','F','C','S'},{'A','D','E','E'}};
+        String  word = "ABCCED";
+        dfs.exist(board,word);
+
+
+
+
+       // combine(5,3);
        // permute(new int[]{1,2,3});
     }
 
@@ -162,6 +171,61 @@ public class DFSTest {
         backtracking(hset,list,start+1,n,count,list1);
         
     }
+
+    /**
+     * leetcode 79
+     * 我只想到70% 😁
+     *
+     * 解题思路 ：
+     *      先往右边（i+1,j）扫描遇到不等于当前的字符时需要回退一个即（i-1,j）
+     *      再往下面扫描（i，j+1)当当前的不满足 回退一个即（i，j-1） ，每次当前的pos+1
+     *      如果pos和要匹配的串相等 说明匹配完全了返回true
+     * @param board
+     * @param word
+     * @return
+     */
+    public boolean exist(char[][] board, String word) {
+
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+               if(board[i][j] == word.charAt(0)){
+                  if(check(board,i,j,word,0)){ //要先找到满足的开始的位置
+                      return true ;
+                   }
+               }
+
+
+            }
+        }
+        return false ;
+    }
+
+    boolean check(char [][] board , int i , int j , String word , int start  ){
+       if(start == word.length() ){
+           return true;
+       }
+        if(i <0 || j < 0 ){
+            return false;
+        }
+        if( i >= board.length || j >=board[i].length){//如果start超过当前的return ；
+            return false;
+        }
+        if(board[i][j] != word.charAt(start)){
+
+            return false;
+        }
+        char t = board[i][j];
+        board[i][j] = '0';
+        boolean res =   check(board,i+1,j,word,start+1) ||  //只要里面有一个满足 说明可以匹配上
+                        check(board,i-1,j,word,start+1)||
+                        check(board,i,j+1,word,start+1)||
+                        check(board,i,j-1,word,start+1) ;
+        board[i][j] = t ; //防止匹配过了又重新匹配  没太明白
+        return res ;
+    }
+
+
+
 
 
 }
