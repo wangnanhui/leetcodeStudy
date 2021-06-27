@@ -192,3 +192,10 @@ Paste (粘贴) : 你可以粘贴你上一次复制的字符。给定一个数字
 ##### 20210624
     leetcode 79
 
+##### 20210625
+    leetcode 51  八皇后问题
+##### 20210626
+    leetcode 39  给定一个无重复元素的数组 candidates 和一个目标数 target ，找出 candidates 中所有可以使数字和为 target 的组合。candidates 中的数字可以无限制重复被选取。
+
+##### 20210627
+    leetcode 78  子集

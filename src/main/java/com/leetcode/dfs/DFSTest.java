@@ -6,6 +6,10 @@ public class DFSTest {
     public static void main(String[] args) {
         DFSTest dfs = new DFSTest();
 
+        dfs.subsets(new int []{1,2,3});
+
+        dfs.combinationSum(new int [] {2,3,5},7);
+
         char [][] board =    {{'A','B','C','E'},{'S','F','C','S'},{'A','D','E','E'}};
         String  word = "ABCCED";
         dfs.exist(board,word);
@@ -222,6 +226,150 @@ public class DFSTest {
                         check(board,i,j-1,word,start+1) ;
         board[i][j] = t ; //防止匹配过了又重新匹配  没太明白
         return res ;
+    }
+
+
+
+
+    public List<List<String>>  solveNQueens(int N ){
+        List<List<String>> list = new ArrayList<>();//存储最后的结果
+        int [] column = new int[N] ;//存储皇后所在的列数
+        Set<Integer>  row = new HashSet<>();//存储皇后所放在的行数
+        Set<Integer>  left = new HashSet<>();//左对角线
+        Set<Integer>  right = new HashSet<>();//右对角线
+        nQueueDfs(list,N,row,left,right,0,column);
+        for (int i = 0; i < list.size(); i++) {
+            System.out.println(list.get(i));
+
+        }
+        System.out.println(list);
+        return list;
+    }
+    void nQueueDfs(List<List<String>> list , int n ,Set<Integer>  row,Set<Integer>  left,Set<Integer>  right , int i , int [] column ){
+        if( i == n){ //走到最后一行了
+            List<String>  temp = createQueue(column,n);
+            list.add(new ArrayList<>(temp));
+            return ;
+        }
+        for (int j = 0; j < n; j++) {
+            //如果当前行的第j列已经放了一个皇后了那这一行一定不能再放其他的了
+            //如果左对角线有了或者有右角线也有了也不能放了
+            //j代表的是 第i行的第j列
+            //有个规律 就是 每一个位置对应的左斜线上的每一个位置 行下标 + 列下标之和相等  右对角线的 行下标 - 列下标 之差相等 ，所以下面判断是是这样
+            if(right.contains(j+i) || left.contains(j - i ) || row.contains(j)){
+                continue;
+            }
+            column[i] =j ; //如果满足的话 先放入
+            row.add(j);
+            right.add(j+i);
+            left.add(j-i);
+            nQueueDfs(list,n,row,left,right,i+1,column);//遍历下一个位置
+            row.remove(j);//因为还可能右其他方案 需要把上一次的移走
+            right.remove(j+i);
+            left.remove(j-i);
+
+
+        }
+
+    }
+
+
+    List<String> createQueue(int [] column , int N){
+        List<String> list = new ArrayList<>();
+        for(int i=0;i<N;i++){
+            char [] row=new char[N];
+            Arrays.fill(row,'.');
+            row[column[i]]='Q';
+            list.add(new String(row));
+        }
+        return list;
+    }
+
+    /**
+     * 给定一个无重复元素的数组candidates和一个目标数target，找出candidates中所有可以使数字和为target的组合。
+     *
+     * candidates中的数字可以无限制重复被选取。
+     *
+     * 来源：力扣（LeetCode）
+     * 链接：https://leetcode-cn.com/problems/combination-sum
+     * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+     * @param candidates
+     * @param target
+     * @return
+     */
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        List<List<Integer>> list= new ArrayList<>();
+       Set<Set<Integer>> set = new HashSet<>();
+      //  for (int i = 0; i < candidates.length; i++) {
+        combinationDfs(list, new ArrayList<>(), candidates, target, 0, 0);
+      //  }
+        System.out.println(list);
+        return list;
+
+    }
+
+    /**
+     *
+     * @param list
+     * @param c
+     * @param candidates
+     * @param target
+     * @param pos
+     * @param sum
+     */
+    void combinationDfs( List<List<Integer>> list , List<Integer> c,  int[] candidates , int target , int pos , int sum){
+
+        if(sum > target || pos == candidates.length  ){//大于说明不能用这个数
+            return ;
+        }
+
+        if(sum == target){//如果相加之和等于要求得数 说明满足
+            List<Integer>  temp= new ArrayList<>(c);
+            Set<Integer> s = new HashSet<>(temp);
+            list.add(temp);
+
+
+            return ;
+        }
+        combinationDfs(list,c,candidates,target,pos+1,sum);//判断某个位置的值就是target
+        if(sum + candidates[pos]<= target) {
+            c.add(candidates[pos]);
+            combinationDfs(list,c,candidates,target,pos,sum + candidates[pos]);
+            c.remove(c.size() - 1 ) ;
+        }
+
+    }
+
+
+    /**
+     * leetcode 78 子集
+     * @param nums
+     * @return
+     */
+    public List<List<Integer>> subsets(int[] nums) {
+        List<List<Integer>> list = new ArrayList<>();
+        subsetsDfs(new ArrayList<>(),list,nums,nums.length,0);
+        System.out.println(list);
+        return list;
+    }
+
+
+    void subsetsDfs( List<Integer> c ,List<List<Integer>> list , int [] nums , int n , int pos){
+        if(pos == n){
+            list.add(new ArrayList<>(c));
+            return;
+        }
+        if(pos > n){
+            return;
+        }
+        c.add(nums[pos]);
+        subsetsDfs(c,list,nums,n,pos+1);
+        c.remove(c.size() -1);
+        subsetsDfs(c,list,nums,n,pos+1);
+
+
+
+
     }
 
 
