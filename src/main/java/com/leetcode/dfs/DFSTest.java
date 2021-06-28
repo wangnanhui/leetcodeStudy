@@ -5,6 +5,13 @@ import java.util.*;
 public class DFSTest {
     public static void main(String[] args) {
         DFSTest dfs = new DFSTest();
+        dfs.pacificAtlantic(new int [][]{
+                {1,2,2,3,5},
+                {3,2,3,4,4},
+                {2,4,5,3,1},
+                {6,7,1,4,5},
+                {5,1,1,2,4}
+        });
 
         dfs.subsets(new int []{1,2,3});
 
@@ -371,6 +378,128 @@ public class DFSTest {
 
 
     }
+
+
+    public List<List<Integer>> pacificAtlantic(int[][] heights) {
+        int m = heights.length;
+        int n = heights[0].length;
+        int[][] ao = new int[m][n];//太平洋的节点记录矩阵
+        int[][] pa = new int[m][n];//大西洋的节点记录矩阵
+        //1. 从上下边界开始两大洋的回流搜索，变动的是列
+        for(int i=0;i<n;i++){
+            dfs(heights,pa,0,i);
+            dfs(heights,ao,m-1,i);
+        }
+        //2. 从左右边界开始两大洋的回流搜索，变动的是行
+        for(int i=0;i<m;i++){
+            dfs(heights,pa,i,0);
+            dfs(heights,ao,i,n-1);
+        }
+        //3. 输出交叠的坐标
+        List<List<Integer>> cnt = new ArrayList<List<Integer>>();
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                if(ao[i][j]==1&&pa[i][j]==1){
+                    cnt.add(Arrays.asList(i,j));
+                }
+            }
+        }
+        return cnt;
+    }
+
+    public static void dfs(int[][] heights,int[][] tmp,int cur_i,int cur_j){
+        //标记可以从海洋流回经过的节点
+        tmp[cur_i][cur_j]=1;
+        //开始深度优先搜索当前坐标的4个方向
+        //1. 设置更新的坐标
+        int[] di=new int[]{1,-1,0,0};//上下移动
+        int[] dj=new int[]{0,0,1,-1};//左右移动
+        int new_i=0;
+        int new_j=0;
+        //2. 更新坐标并递归搜索
+        for(int index=0;index<4;index++){
+            new_i=cur_i+di[index];
+            new_j=cur_j+dj[index];
+            //判断下标是否越界
+            if(new_i<0||new_j<0||new_i>=heights.length||new_j>=heights[0].length){
+                continue;
+            }
+            if(heights[cur_i][cur_j]<=heights[new_i][new_j]&&tmp[new_i][new_j]!=1){
+                dfs(heights,tmp,new_i,new_j);
+            }
+        }
+    }
+
+
+//    public List<List<Integer>> pacificAtlantic(int[][] heights) {
+//
+//        int [][] l1 = new int[heights.length][heights[0].length];
+//        int [][] l2 = new int[heights.length][heights[0].length];
+//
+//        for (int i = 0; i < heights.length; i++) {
+//            for (int j = 0; j < heights[i].length; j++) {
+//                atlanticDfs(i , j ,  heights ,l1);
+//            }
+//        }
+//
+//        for (int i = heights.length - 1 ; i >=0; i--) {
+//            for (int j = heights[i].length - 1 ; j >= 0; j--) {
+//                pacificDfs(i , j ,heights,l2);
+//            }
+//        }
+//
+//
+//        List<List<Integer>> list = new ArrayList<>();
+//
+//        for (int i = 0; i < l1.length; i++) {
+//            for (int j = 0; j < l1[i].length; j++) {
+//                if(l2[i][j] == 1  && l1[i][j] == 1 ){
+//                    list.add(Arrays.asList(i,j));
+//                }
+//            }
+//        }
+//        return list;
+//
+//
+//    }
+//    //可以先往大西洋流 ，能流到的再把这些点往太平洋流 只留下都能流到的
+//    void atlanticDfs(int x , int y ,  int [][] heights , int [][] l){
+//        if((x+1 >= heights.length || y+1 >= heights[x].length)){ //说明到最右边和最下边了
+//            l[x][y] = 1 ;
+//            return;
+//        }
+//        if(heights[x][y] >= heights[x+1][y]) {//先往右流
+//
+//            return ;
+//        }
+//        if(heights[x][y] >= heights[x][y+1]) { //再往下边流
+//
+//            return ;
+//        }
+//        atlanticDfs(x+1,y,heights,l);
+//        atlanticDfs(x,y+1,heights,l);
+//
+//    }
+//
+//
+//    //可以先往大西洋流 ，能流到的再把这些点往太平洋流 只留下都能流到的
+//    void pacificDfs(int x , int y ,  int [][] heights , int [][] l ){
+//        if(x -1 <= 0 || y - 1  <= 0 ){ //说明到最右边和最下边了
+//            l[x][y] = 1 ;
+//            return;
+//        }
+//        if(heights[x][y] <= heights[x-1][y]) {//先往左流
+//            l[x][y] = 0;
+//            return ;
+//        }
+//        if(heights[x][y] <= heights[x][y-1]) { //再往上边流
+//            l[x][y] = 0;
+//            return ;
+//        }
+//        pacificDfs(x-1,y,heights,l);
+//        pacificDfs(x,y-1,heights,l);
+//
+//    }
 
 
 
