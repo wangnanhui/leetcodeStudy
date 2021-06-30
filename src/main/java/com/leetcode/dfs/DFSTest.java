@@ -464,7 +464,8 @@ public class DFSTest {
 //    }
 //    //可以先往大西洋流 ，能流到的再把这些点往太平洋流 只留下都能流到的
 //    void atlanticDfs(int x , int y ,  int [][] heights , int [][] l){
-//        if((x+1 >= heights.length || y+1 >= heights[x].length)){ //说明到最右边和最下边了
+//        l[x][y] = 0 ;
+//        if((x+1 >= heights.length || y+1 >= heights[x].length) || y-1<=0 || x-1 <= 0 ){ //说明到最右边和最下边了
 //            l[x][y] = 1 ;
 //            return;
 //        }
@@ -477,14 +478,17 @@ public class DFSTest {
 //            return ;
 //        }
 //        atlanticDfs(x+1,y,heights,l);
+//        atlanticDfs(x-1,y,heights,l);
 //        atlanticDfs(x,y+1,heights,l);
+//        atlanticDfs(x,y-1,heights,l);
 //
 //    }
 //
 //
 //    //可以先往大西洋流 ，能流到的再把这些点往太平洋流 只留下都能流到的
 //    void pacificDfs(int x , int y ,  int [][] heights , int [][] l ){
-//        if(x -1 <= 0 || y - 1  <= 0 ){ //说明到最右边和最下边了
+//        l[x][y] = 0 ;
+//        if((x+1 >= heights.length || y+1 >= heights[x].length) || y-1<=0 || x-1 <= 0 ){ //说明到最右边和最下边了
 //            l[x][y] = 1 ;
 //            return;
 //        }
@@ -497,10 +501,12 @@ public class DFSTest {
 //            return ;
 //        }
 //        pacificDfs(x-1,y,heights,l);
+//        pacificDfs(x+1,y,heights,l);
 //        pacificDfs(x,y-1,heights,l);
+//        pacificDfs(x,y+1,heights,l);
 //
 //    }
-
+//
 
 
 
