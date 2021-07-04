@@ -5,21 +5,21 @@ import java.util.*;
 public class DFSTest {
     public static void main(String[] args) {
         DFSTest dfs = new DFSTest();
-        dfs.pacificAtlantic(new int [][]{
-                {1,2,2,3,5},
-                {3,2,3,4,4},
-                {2,4,5,3,1},
-                {6,7,1,4,5},
-                {5,1,1,2,4}
-        });
+//        dfs.pacificAtlantic(new int [][]{
+//                {1,2,2,3,5},
+//                {3,2,3,4,4},
+//                {2,4,5,3,1},
+//                {6,7,1,4,5},
+//                {5,1,1,2,4}
+//        });
 
-        dfs.subsets(new int []{1,2,3});
+      //  dfs.subsets(new int []{1,2,3});
 
-        dfs.combinationSum(new int [] {2,3,5},7);
+        dfs.combinationSum2(new int [] {2,5,1,1,2,3,3,3,1,2,2},5);
 
-        char [][] board =    {{'A','B','C','E'},{'S','F','C','S'},{'A','D','E','E'}};
-        String  word = "ABCCED";
-        dfs.exist(board,word);
+//        char [][] board =    {{'A','B','C','E'},{'S','F','C','S'},{'A','D','E','E'}};
+//        String  word = "ABCCED";
+//        dfs.exist(board,word);
 
 
 
@@ -508,7 +508,62 @@ public class DFSTest {
 //    }
 //
 
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        boolean [] userd = new boolean[candidates.length];
+        List<List<Integer>> list = new ArrayList<>();
+        Arrays.sort(candidates);
+        combinationDfs(candidates,0,target,new ArrayList<>(),0,list,userd);
+        System.out.println("----------");
+        System.out.println(list);
+        return null;
+
+    }
+    void combinationDfs(int [] candidates , int sum , int target , List<Integer> c , int pos , List<List<Integer>> list , boolean [] used ){
+        if( pos == candidates.length  || sum > target || used[pos])
+            return ;
+        if(sum == target){
+            list.add(new ArrayList<>(c));
+            return ;
+        }
+
+        combinationDfs(candidates,sum,target ,c,pos+1,list,used);
+        if(sum <= target && !used[pos]){
+            int temp = candidates[pos];
+            used[pos] = true ;
+            c.add(temp);
+            combinationDfs(candidates,sum+temp,target,c,pos,list,used);
+            used[pos] = false ;
+            c.remove(c.size()-1);
 
 
+
+        }
+
+
+
+    }
+    public Node reverse(Node node ){
+
+        Node pre = null ;
+        Node cur = node ;
+        while (cur != null){
+            Node temp = cur.next ;
+            cur.next = pre ;
+            pre = cur ;
+            cur = temp ;
+        }
+        return pre ;
+    }
+
+
+
+
+
+}
+
+
+class  Node{
+    public  int val ;
+    public  Node next ;
 
 }
