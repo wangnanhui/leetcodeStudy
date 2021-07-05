@@ -1,8 +1,13 @@
 package com.leetcode.tinxin;
 
+import java.sql.Struct;
+import java.util.Arrays;
+import java.util.Comparator;
+
 public class TanXin {
     public static void main(String[] args) {
         TanXin t = new TanXin();
+        t.eraseOverlapIntervals(new int [][]{{0,2},{1,3},{2,4},{3,5},{4,6}});
         t.candy(new int[]{1,3,2,2,1});
     }
 
@@ -64,7 +69,34 @@ public class TanXin {
     }
 
 
+    /**
+     * leetcode 435. 无重叠区间
+     * @param intervals
+     * @return
+     */
+    public int eraseOverlapIntervals(int[][] intervals) {
+        int count = 0 ;
+        Arrays.sort(intervals, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                if(o1[1] == o2[1])
+                    return 0 ;
+                return o1[1] > o2[1] ? 1 : -1 ;
+            }
+        });
 
+
+
+        int j = 0 ;
+        for (int i = 1; i < intervals.length; i++) {
+            if(intervals[j][1] > intervals[i][0]){
+                count++;
+            }else{
+                j = i  ;
+            }
+        }
+        return count;
+    }
 
 
 
